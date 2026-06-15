@@ -3,3 +3,5 @@ pandas
 requests
 nselib
 curl_cffi
+gunicorn
+whitenoise

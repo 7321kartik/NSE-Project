@@ -1,0 +1,17 @@
+# Python cache files
+__pycache__/
+*.pyc
+
+# Local SQLite database
+db.sqlite3
+
+# Local static files build directory
+staticfiles/
+
+# Local JSON caching (optional if we don't want them in git, but they are generated/updated)
+# Since GitHub Actions commits public/market_data.json, we keep public/*.json tracked so the app launches with initial data.
+# So we do NOT ignore public/ directory.
+
+# OS files
+.DS_Store
+Thumbs.db

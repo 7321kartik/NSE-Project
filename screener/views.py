@@ -257,7 +257,10 @@ def export_csv(request):
     if not csv_data or not filename:
         return JsonResponse({"error": "Missing csvData or filename in request body."}, status=400)
 
-    download_dir = 'C:\\download'
+    if os.name == 'nt':
+        download_dir = 'C:\\download'
+    else:
+        download_dir = os.path.join(settings.BASE_DIR, 'public', 'downloads')
     try:
         if not os.path.exists(download_dir):
             os.makedirs(download_dir, exist_ok=True)
