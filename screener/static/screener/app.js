@@ -175,6 +175,10 @@ const els = {
     presetsGrid:    $('presetsGrid'),
     priceBreakout:  $('priceBreakout'),
     volumeBreakout: $('volumeBreakout'),
+    mobileMenuBtn:  $('mobileMenuBtn'),
+    mobileCloseBtn: $('mobileCloseBtn'),
+    sidebarBackdrop: $('sidebarBackdrop'),
+    sidebarPanel:   $('sidebarPanel'),
 };
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -250,6 +254,20 @@ function applyPreset(key) {
 }
 
 function setupListeners() {
+    // Mobile Sidebar Drawer Toggles
+    if (els.mobileMenuBtn) {
+        els.mobileMenuBtn.addEventListener('click', () => {
+            els.sidebarPanel.classList.add('open');
+            els.sidebarBackdrop.classList.add('show');
+        });
+    }
+    if (els.mobileCloseBtn) {
+        els.mobileCloseBtn.addEventListener('click', closeMobileSidebar);
+    }
+    if (els.sidebarBackdrop) {
+        els.sidebarBackdrop.addEventListener('click', closeMobileSidebar);
+    }
+
     els.applyBtn.addEventListener('click', applyAndRender);
     els.resetBtn.addEventListener('click', () => {
         activePreset = null;
@@ -294,7 +312,13 @@ function num(el, fallback) {
     return isNaN(v) ? fallback : v;
 }
 
+function closeMobileSidebar() {
+    if (els.sidebarPanel) els.sidebarPanel.classList.remove('open');
+    if (els.sidebarBackdrop) els.sidebarBackdrop.classList.remove('show');
+}
+
 function applyAndRender() {
+    closeMobileSidebar();
     if (!marketData.stocks?.length) return;
 
     const query    = els.search.value.trim().toUpperCase();
@@ -519,11 +543,11 @@ function renderChart() {
             scales: {
                 x: {
                     grid: { color: 'rgba(255,255,255,0.04)' },
-                    ticks: { color: '#8892a4', font: { family: 'Outfit', size: 11 } },
+                    ticks: { color: '#9ca3af', font: { family: 'Outfit', size: 11 } },
                 },
                 y: {
                     grid: { display: false },
-                    ticks: { color: '#f0f2f8', font: { family: 'Outfit', weight: 'bold', size: 12 } }
+                    ticks: { color: '#f9fafb', font: { family: 'Outfit', weight: 'bold', size: 12 } }
                 }
             }
         }

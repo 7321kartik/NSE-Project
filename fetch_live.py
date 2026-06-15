@@ -129,10 +129,23 @@ def run():
 
     # Build a merged stocks dict keyed by symbol (for quick lookup from screener)
     all_stocks = {}
+    
+    # Filter out ETFs, Gilt/Gold Bonds, and mutual fund instruments
+    def is_etf(sym):
+        sym = str(sym).upper()
+        # Keywords representing ETFs / Mutual Funds / G-Secs
+        keywords = ('ETF', 'BEES', 'BETF', 'LIQUID', 'GSEC', 'GILT')
+        if any(kw in sym for kw in keywords):
+            return True
+        if sym.startswith('SETF') or sym in ('M50', 'MON100'):
+            return True
+        return False
+
     for stock in gainers + losers + active:
         sym = stock.get('symbol', '')
         if sym and sym not in all_stocks:
-            all_stocks[sym] = stock
+            if not is_etf(sym):
+                all_stocks[sym] = stock
 
     output = {
         'timestamp':   datetime.now().isoformat(),

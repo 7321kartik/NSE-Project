@@ -25,16 +25,20 @@
         </div>
     </div>
 
+    <!-- Sidebar Backdrop for Mobile -->
+    <div id="sidebarBackdrop" class="sidebar-backdrop"></div>
+
     <div class="app-container">
 
         <!-- ============ SIDEBAR ============ -->
-        <aside class="sidebar">
+        <aside class="sidebar" id="sidebarPanel">
             <div class="brand">
                 <div class="brand-logo"><i class="fa-solid fa-chart-candlestick"></i></div>
                 <div>
                     <span class="brand-name">NSE<span>Pro</span></span>
                     <p class="brand-tag">Institutional Screener</p>
                 </div>
+                <button id="mobileCloseBtn" class="mobile-close-btn" aria-label="Close sidebar">&times;</button>
             </div>
 
             <!-- ---- STRATEGY PRESETS ---- -->
@@ -242,8 +246,13 @@
             <!-- Header -->
             <header class="main-header">
                 <div class="header-left">
-                    <div class="active-preset-tag" id="activeScanLabel">
-                        <i class="fa-solid fa-circle-dot"></i> All Stocks
+                    <div class="header-title-row">
+                        <button id="mobileMenuBtn" class="mobile-menu-btn" aria-label="Open filters">
+                            <i class="fa-solid fa-sliders"></i> Filters
+                        </button>
+                        <div class="active-preset-tag" id="activeScanLabel">
+                            <i class="fa-solid fa-circle-dot"></i> All Stocks
+                        </div>
                     </div>
                     <h1>NSE Pro Screener</h1>
                     <p class="subtitle">Institutional-grade scanning for Indian equity markets</p>

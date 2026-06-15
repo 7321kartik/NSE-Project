@@ -42,10 +42,24 @@ def get_latest_n_days_bhav(n=5):
                 required_cols = {'TckrSymb', 'ClsPric', 'TtlTradgVol', 'SctySrs', 'PrvsClsgPric', 'OpnPric', 'HghPric', 'LwPric'}
                 if required_cols.issubset(df.columns):
                     df_eq = df[df['SctySrs'] == 'EQ'].copy()
+                    
+                    # Filter out ETFs, Gilt/Gold Bonds, and mutual fund instruments
+                    def is_etf(sym):
+                        sym = str(sym).upper()
+                        # Keywords representing ETFs / Mutual Funds / G-Secs
+                        keywords = ('ETF', 'BEES', 'BETF', 'LIQUID', 'GSEC', 'GILT')
+                        if any(kw in sym for kw in keywords):
+                            return True
+                        if sym.startswith('SETF') or sym in ('M50', 'MON100'):
+                            return True
+                        return False
+                    
+                    df_eq = df_eq[~df_eq['TckrSymb'].apply(is_etf)].copy()
+                    
                     if not df_eq.empty:
                         dfs.append(df_eq)
                         dates.append(date_str)
-                        print(f"  -> SUCCESS: {date_str} ({len(df_eq)} EQ rows)")
+                        print(f"  -> SUCCESS: {date_str} ({len(df_eq)} EQ stocks, ETFs excluded)")
                     else:
                         print(f"  -> Warning: No EQ series for {date_str}")
                 else:
