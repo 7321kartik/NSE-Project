@@ -17,7 +17,23 @@ def get_latest_n_days_bhav(n=5):
     print(f"Starting to fetch last {n} trading days' Bhav Copies...")
     
     while len(dfs) < n and days_checked < max_days:
+        # Skip weekends (5 = Saturday, 6 = Sunday)
+        if current_date.weekday() >= 5:
+            current_date -= timedelta(days=1)
+            days_checked += 1
+            continue
+            
         date_str = current_date.strftime('%d-%m-%Y')
+        
+        # Skip today if it's a weekday but before 5:30 PM local time when Bhav Copy is generated
+        if current_date.date() == datetime.now().date():
+            now_time = datetime.now()
+            if now_time.hour < 17 or (now_time.hour == 17 and now_time.minute < 30):
+                print(f"Skipping today's date ({date_str}) as Bhav Copy is not yet released.")
+                current_date -= timedelta(days=1)
+                days_checked += 1
+                continue
+
         print(f"Checking date: {date_str}...")
         try:
             df = capital_market.bhav_copy_equities(date_str)
@@ -52,7 +68,7 @@ def safe_float(val, default=0.0):
     except:
         return default
 
-def fetch_historical_yahoo(symbols, workers=15):
+def fetch_historical_yahoo(symbols, workers=40):
     """
     Fetches 1y historical daily data for a list of symbol tickers from Yahoo Finance in parallel.
     Returns a dict mapping symbol -> historical daily bars (dict of close, high, low, open, volume arrays).

@@ -1,0 +1,173 @@
+.bo-1w-vol {
+    background: rgba(209, 213, 219, 0.12);
+    color: #d1d5db;
+    border: 1px solid rgba(209, 213, 219, 0.2);
+}
+
+/* =====================================================
+   LIVE VIEW BUTTON
+   ===================================================== */
+.btn-live {
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.35);
+    color: #f87171;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.1rem;
+    border-radius: var(--r);
+    cursor: pointer;
+    transition: all var(--t);
+}
+.btn-live:hover, .btn-live.active {
+    background: rgba(239, 68, 68, 0.22);
+    border-color: #ef4444;
+    color: #fca5a5;
+    box-shadow: 0 0 16px rgba(239, 68, 68, 0.25);
+}
+
+.live-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #ef4444;
+    display: inline-block;
+    flex-shrink: 0;
+}
+.live-dot.pulse { animation: livePulse 1.4s ease-in-out infinite; }
+@keyframes livePulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(239,68,68,0.5); }
+    50%       { box-shadow: 0 0 0 5px rgba(239,68,68,0); }
+}
+.btn-sm { padding: 0.45rem 0.9rem; font-size: 0.8rem; }
+
+/* =====================================================
+   LIVE PANEL
+   ===================================================== */
+.live-backdrop {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    transition: opacity 0.3s ease;
+}
+.live-backdrop.hidden { opacity: 0; pointer-events: none; }
+
+.live-panel {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    height: 72vh;
+    background: var(--bg-1);
+    border-top: 1px solid rgba(239,68,68,0.25);
+    border-radius: 20px 20px 0 0;
+    z-index: 1001;
+    display: flex; flex-direction: column;
+    transform: translateY(0);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 -20px 60px rgba(0,0,0,0.5);
+}
+.live-panel.hidden { transform: translateY(100%); pointer-events: none; }
+.live-panel-inner { display: flex; flex-direction: column; height: 100%; overflow: hidden; }
+
+.live-panel-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.1rem 1.5rem 0.9rem;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+}
+.live-panel-title { display: flex; align-items: center; gap: 0.6rem; }
+.live-panel-title h2 { font-size: 1.1rem; font-weight: 800; letter-spacing: -0.3px; }
+.live-timestamp { font-size: 0.75rem; color: var(--text-3); margin-left: 0.5rem; }
+.live-panel-actions { display: flex; gap: 0.5rem; align-items: center; }
+
+.live-indices-bar {
+    display: flex; gap: 0;
+    overflow-x: auto;
+    padding: 0.6rem 1.5rem;
+    background: var(--bg-2);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+    scrollbar-width: none;
+}
+.live-indices-bar::-webkit-scrollbar { display: none; }
+.index-chip {
+    display: flex; flex-direction: column;
+    padding: 0.3rem 1.1rem;
+    border-right: 1px solid var(--border);
+    flex-shrink: 0; min-width: 140px;
+}
+.index-chip:first-child { padding-left: 0; }
+.index-chip:last-child { border-right: none; }
+.index-name { font-size: 0.7rem; color: var(--text-3); font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; white-space: nowrap; }
+.index-val  { font-size: 0.95rem; font-weight: 800; letter-spacing: -0.3px; }
+.index-chg  { font-size: 0.72rem; font-weight: 700; }
+.indices-loading { color: var(--text-3); font-size: 0.82rem; align-self: center; }
+
+.live-tabs {
+    display: flex; gap: 0;
+    border-bottom: 1px solid var(--border);
+    padding: 0 1.5rem;
+    flex-shrink: 0;
+    background: var(--bg-1);
+}
+.live-tab {
+    background: none; border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--text-3);
+    font-family: var(--font); font-size: 0.82rem; font-weight: 600;
+    padding: 0.75rem 1.1rem;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 0.4rem;
+    transition: all var(--t); white-space: nowrap;
+}
+.live-tab:hover { color: var(--text-2); }
+.live-tab.active { color: var(--text); border-bottom-color: #ef4444; }
+
+.live-table-container { flex: 1; overflow-y: auto; padding: 0; }
+.live-empty { text-align: center; color: var(--text-3); padding: 3rem; font-size: 0.9rem; }
+
+.live-stock-table { width: 100%; border-collapse: collapse; font-size: 0.83rem; }
+.live-stock-table thead th {
+    position: sticky; top: 0;
+    background: var(--bg-2); color: var(--text-3);
+    font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid var(--border);
+    z-index: 2; text-align: right;
+}
+.live-stock-table thead th:first-child { text-align: left; }
+.live-stock-table tbody td {
+    padding: 0.65rem 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    text-align: right; vertical-align: middle;
+}
+.live-stock-table tbody td:first-child { text-align: left; }
+.live-stock-table tbody tr:hover td { background: rgba(255,255,255,0.02); }
+.live-sym { font-weight: 800; font-size: 0.88rem; color: var(--text); letter-spacing: -0.3px; }
+
+.pct-badge { display: inline-flex; align-items: center; gap: 0.2rem; padding: 0.2rem 0.55rem; border-radius: 6px; font-weight: 800; font-size: 0.8rem; }
+.pct-up   { background: rgba(16,185,129,0.14); color: #34d399; border: 1px solid rgba(16,185,129,0.25); }
+.pct-down { background: rgba(239,68,68,0.12);  color: #f87171; border: 1px solid rgba(239,68,68,0.25); }
+.pct-flat { background: var(--bg-2); color: var(--text-2); border: 1px solid var(--border); }
+.auto-on  { background: rgba(16,185,129,0.14); border-color: rgba(16,185,129,0.35); color: #34d399; }
+
+/* =====================================================
+   EOD BADGE — Yellow/amber to distinguish from Live (red)
+   ===================================================== */
+.eod-badge {
+    background: rgba(245, 158, 11, 0.1) !important;
+    border: 1px solid rgba(245, 158, 11, 0.3) !important;
+    color: var(--text-2) !important;
+}
+
+.eod-label {
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    background: rgba(245, 158, 11, 0.18);
+    color: #fbbf24;
+    padding: 0.1rem 0.4rem;
+    border-radius: 4px;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+}
